@@ -1,0 +1,37 @@
+{
+  "name": "client",
+  "productName": "MediaDB Manager",
+  "version": "1.0.0",
+  "description": "Media-DBMS front end",
+  "main": "main.js",
+  "scripts": {
+    "dev": "npx electronmon .",
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vykp00/Media-DBMS.git"
+  },
+  "keywords": [
+    "Electron",
+    "Postgres",
+    "DBMS"
+  ],
+  "author": "VyKp00",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Vykp00/Media-DBMS/issues"
+  },
+  "homepage": "https://github.com/Vykp00/Media-DBMS#readme",
+  "devDependencies": {
+    "electron": "^29.0.1"
+  },
+  "dependencies": {
+    "@electron-internal/eslint-config": "^1.0.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-node": "^11.1.0",
+    "pg": "^8.11.3",
+    "socket.io-client": "^4.7.4"
+  }
+}

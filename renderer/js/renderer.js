@@ -1,0 +1,171 @@
+// Communicate with event
+const { ipcRenderer } = require('electron');
+// Queries for the application:
+// JOIN: A view on Dashboard to show total number of user, and post in a group
+//
+// SELECT all comments in a post (DONE) ✌️
+//
+// INSERT new user to a group (INSERT to membership table)
+//
+// DELETE a comment in a post
+//
+// UPDATE a user’s name
+//
+// For Dashboard (SELECT * queries)
+//
+// Display Group Table
+//
+// Display User Table
+//
+// Display Post	 Table
+
+// GET post
+document.addEventListener('DOMContentLoaded', () => {
+  // Get the buttons
+  const groupBtn = document.getElementById('group-btn');
+  const userBtn = document.getElementById('user-btn');
+  const postBtn = document.getElementById('post-btn');
+
+  // Get ALL group
+  groupBtn.addEventListener('click', () => {
+    ipcRenderer.send('getGroups');
+  });
+
+  // Get ALL users
+  userBtn.addEventListener('click', () => {
+    ipcRenderer.send('getUsers');
+  });
+
+  // Get ALL posts
+  postBtn.addEventListener('click', () => {
+    ipcRenderer.send('getPosts');
+  });
+});
+
+// Global variable for data manipulation
+let tableBody = document.getElementById('data-output');
+let tableHeader = document.getElementById('data-header');
+let tableName = document.getElementById('table-name');
+
+// This render Data from icpRenderer
+function renderData (data, type) {
+
+  const groupHeaders = ['GroupID', 'Name', 'Description', 'Option'];
+  const userHeaders = ['UserID', 'Name', 'Email', 'Password', 'Option'];
+  const postHeaders = ['PostID', 'UserID', 'GroupID', 'Title', 'Text', 'Date', 'Option'];
+  const commentHeaders = ['CommentID', 'Text', 'Date', 'UserID', 'PostID', 'Option'];
+
+  tableBody.innerHTML = ''; // Clear previous data
+  tableHeader.innerHTML = ''; // Clear previous data
+  tableName.innerHTML = ''; // Clear previous data
+
+  // This render table title
+  let headers;
+  // This render Option Button text
+  let btnOptionText;
+
+  // If fetched data is Group table
+  if (type === 1) {
+    // create Group Header
+    headers = groupHeaders;
+    tableName.innerHTML = 'Group Table';
+  } // If fetch data is User table
+  if (type === 2) {
+    headers = userHeaders;
+    tableName.innerHTML = 'User Table';
+  } // If fetch data is the Post table
+  if (type === 3) {
+    headers = postHeaders;
+    tableName.innerHTML = 'Post Table';
+    btnOptionText = "View Comments";
+  } // If fetch data is the Comment table
+  if (type === 4) {
+    headers = commentHeaders;
+    tableName.innerHTML = 'Comment Table';
+}
+
+  // Populate header dynamically
+  headers.forEach(headerText => {
+    const header = document.createElement('th');
+    header.textContent = headerText;
+    tableHeader.appendChild(header);
+  });
+
+  // Populate data dynamically
+  data.forEach(item => {
+    const row = document.createElement('tr');
+
+    Object.keys(item).forEach(key => {
+      const cell = document.createElement('td');
+      cell.textContent = item[key];
+      row.appendChild(cell);
+    });
+
+    // Create a cell for optionBtn
+    const buttonCell = document.createElement('td');
+    // This render table option button // EDIT IT TO MATCH EACH TABLE
+    const getOptionBtn = setOptionBtn(btnOptionText, item);
+    // Append Option button to cell
+    buttonCell.appendChild(getOptionBtn);
+    row.appendChild(buttonCell);
+
+
+    tableBody.appendChild(row);
+  });
+}
+// Get Comments
+function getComments(keyID) {
+  ipcRenderer.send('getComments', keyID);
+}
+
+// Render group results
+ipcRenderer.on('groups', (event, groups) => {
+  renderData(groups, 1);
+});
+
+// Render user results
+ipcRenderer.on('users', (event, users) => {
+  renderData(users, 2);
+});
+
+// Render posts results
+ipcRenderer.on('posts', (event, posts) => {
+  renderData(posts, 3);
+});
+
+// Render comment results
+ipcRenderer.on('comments', (event, comments) => {
+  renderData(comments , 4);
+});
+
+
+// Decide the optionBtn fucntion
+function setOptionBtn(optionText, data) {
+  // This render table option button // EDIT IT TO MATCH EACH TABLE
+  const optionBtn = document.createElement('button');
+  if (optionText === "View Comments") {
+    optionBtn.textContent = optionText;
+    // Add an onclick event listener to the button
+    optionBtn.onclick = function() {
+      getComments(data.postid); // Call the getComments function passing the postId
+    };
+  } else if (optionText === "Add Member") {
+    optionBtn.textContent = optionText;
+    // Add an onclick event listener to the button
+    optionBtn.onclick = function() {
+      getComments(data.postid); // Call the getComments function passing the postId
+    };
+  }
+  else {
+    optionBtn.textContent = "Others";
+    // Add an onclick event listener to the button
+    optionBtn.onclick = function() {
+      console.log("Other functions"); // Call the other function passing the postId
+    };
+  }
+
+  return optionBtn;
+}
+
+
+

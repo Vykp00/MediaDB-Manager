@@ -1,0 +1,84 @@
+{
+  "Post" : [
+    {
+      "PostID": "post1",
+      "UserID": "user1",
+      "GroupID": "group1",
+      "Title": "Introduction to Artificial Intelligence",
+      "Text": "Exploring the basics of AI, its applications, and future prospects.",
+      "Date": "2024-02-28"
+    },
+    {
+      "PostID": "post2",
+      "UserID": "user2",
+      "GroupID": "group1",
+      "Title": "Beginner's Guide to Python Programming",
+      "Text": "A step-by-step tutorial for beginners to learn Python programming language.",
+      "Date": "2024-02-27"
+    },
+    {
+      "PostID": "post3",
+      "UserID": "user3",
+      "GroupID": "group2",
+      "Title": "Exploring Machine Learning Algorithms",
+      "Text": "Dive deep into various machine learning algorithms and their implementations.",
+      "Date": "2024-02-26"
+    },
+    {
+      "PostID": "post4",
+      "UserID": "user1",
+      "GroupID": "group2",
+      "Title": "Data Visualization Techniques",
+      "Text": "Learn how to create compelling visualizations from your data.",
+      "Date": "2024-02-25"
+    },
+    {
+      "PostID": "post5",
+      "UserID": "user4",
+      "GroupID": "group3",
+      "Title": "The Art of Storytelling",
+      "Text": "Master the art of storytelling to captivate your audience.",
+      "Date": "2024-02-24"
+    },
+    {
+      "PostID": "post6",
+      "UserID": "user2",
+      "GroupID": "group3",
+      "Title": "Tips for Effective Time Management",
+      "Text": "Discover effective time management techniques to boost productivity.",
+      "Date": "2024-02-23"
+    },
+    {
+      "PostID": "post7",
+      "UserID": "user3",
+      "GroupID": "group4",
+      "Title": "Exploring Quantum Computing",
+      "Text": "An introduction to the fascinating world of quantum computing.",
+      "Date": "2024-02-22"
+    },
+    {
+      "PostID": "post8",
+      "UserID": "user4",
+      "GroupID": "group4",
+      "Title": "The Power of Positive Thinking",
+      "Text": "Harness the power of positive thinking to achieve your goals.",
+      "Date": "2024-02-21"
+    },
+    {
+      "PostID": "post9",
+      "UserID": "user1",
+      "GroupID": "group5",
+      "Title": "Effective Communication Skills",
+      "Text": "Improve your communication skills for better personal and professional relationships.",
+      "Date": "2024-02-20"
+    },
+    {
+      "PostID": "post10",
+      "UserID": "user2",
+      "GroupID": "group5",
+      "Title": "Understanding Blockchain Technology",
+      "Text": "An in-depth look into blockchain technology and its potential applications.",
+      "Date": "2024-02-19"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: sans-serif;
+    min-height: 100vh;
+    color: #555;
+}
+
+table{
+    width:  1000px;
+    margin: 30px auto;
+}
+
+table th{
+    padding: 10px 0;
+    background-color: #f4f4f4;
+    /* background-color: #fff; */
+    border:  thin solid #d4d4d4;
+}
+
+table td{
+    padding: 10px;
+    border:  thin solid #d4d4d4;
+    width: 18%;
+    text-align: center;
+    background-color: #fff;
+}
+
+table img{
+    width:  70%;
+}
+/* This Style button */
+.btn {
+    border: none; /* Remove borders */
+    color: white; /* Add a text color */
+    padding: 10px 18px; /* Add some padding */
+    cursor: pointer; /* Add a pointer cursor on mouse-over */
+    border-radius: 5px; /* Add button curve */
+    text-align: center; /* Align text */
+    font-size: 16px; /* Add Font*/
+}
+
+.success {background-color: #04AA6D;} /* Green */
+.success:hover {background-color: #46a049;}

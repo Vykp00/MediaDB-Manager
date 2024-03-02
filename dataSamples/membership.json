@@ -1,0 +1,64 @@
+{
+  "Membership" : [
+    {
+      "UserID": "user1",
+      "GroupID": "group1"
+    },
+    {
+      "UserID": "user1",
+      "GroupID": "group2"
+    },
+    {
+      "UserID": "user1",
+      "GroupID": "group3"
+    },
+    {
+      "UserID": "user2",
+      "GroupID": "group2"
+    },
+    {
+      "UserID": "user2",
+      "GroupID": "group4"
+    },
+    {
+      "UserID": "user3",
+      "GroupID": "group3"
+    },
+    {
+      "UserID": "user4",
+      "GroupID": "group1"
+    },
+    {
+      "UserID": "user5",
+      "GroupID": "group5"
+    },
+    {
+      "UserID": "user6",
+      "GroupID": "group2"
+    },
+    {
+      "UserID": "user6",
+      "GroupID": "group5"
+    },
+    {
+      "UserID": "user7",
+      "GroupID": "group3"
+    },
+    {
+      "UserID": "user8",
+      "GroupID": "group1"
+    },
+    {
+      "UserID": "user8",
+      "GroupID": "group4"
+    },
+    {
+      "UserID": "user9",
+      "GroupID": "group5"
+    },
+    {
+      "UserID": "user10",
+      "GroupID": "group3"
+    }
+  ]
+}

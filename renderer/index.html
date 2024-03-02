@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+            content="default-src 'self'; script-src 'self'"
+            http-equiv="Content-Security-Policy"
+    />
+    <meta
+            content="default-src 'self'; script-src 'self'"
+            http-equiv="X-Content-Security-Policy"
+    />
+    <title>Media DBMS</title>
+    <link href="css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<h1>Media Dashboard 👋</h1>
+<div class="navBtn" id="navBtn">
+    <button class="btn success" id="group-btn">Group</button>
+    <button class="btn success" id="user-btn">User</button>
+    <button class="btn success" id="post-btn">Post</button>
+</div>
+<br/>
+<div id="table-container">
+    <h2 id="table-name"></h2>
+    <table id="data-table">
+        <thead>
+        <tr id="data-header">
+            <!-- Populate data header here-->
+        </tr>
+        </thead>
+        <tbody id="data-output">
+        <!-- Populate data by renderer.js -->
+        </tbody>
+    </table>
+</div>
+</body>
+<script src="js/renderer.js"></script>
+</html>

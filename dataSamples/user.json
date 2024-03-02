@@ -1,0 +1,64 @@
+{
+  "User" : [
+    {
+      "UserID": "user1",
+      "Name": "John Doe",
+      "Email": "john.doe@example.com",
+      "Password": "hashed_password_1"
+    },
+    {
+      "UserID": "user2",
+      "Name": "Alice Smith",
+      "Email": "alice.smith@example.com",
+      "Password": "hashed_password_2"
+    },
+    {
+      "UserID": "user3",
+      "Name": "Michael Johnson",
+      "Email": "michael.johnson@example.com",
+      "Password": "hashed_password_3"
+    },
+    {
+      "UserID": "user4",
+      "Name": "Emily Brown",
+      "Email": "emily.brown@example.com",
+      "Password": "hashed_password_4"
+    },
+    {
+      "UserID": "user5",
+      "Name": "David Wilson",
+      "Email": "david.wilson@example.com",
+      "Password": "hashed_password_5"
+    },
+    {
+      "UserID": "user6",
+      "Name": "Sophia Martinez",
+      "Email": "sophia.martinez@example.com",
+      "Password": "hashed_password_6"
+    },
+    {
+      "UserID": "user7",
+      "Name": "James Taylor",
+      "Email": "james.taylor@example.com",
+      "Password": "hashed_password_7"
+    },
+    {
+      "UserID": "user8",
+      "Name": "Emma Garcia",
+      "Email": "emma.garcia@example.com",
+      "Password": "hashed_password_8"
+    },
+    {
+      "UserID": "user9",
+      "Name": "Daniel Hernandez",
+      "Email": "daniel.hernandez@example.com",
+      "Password": "hashed_password_9"
+    },
+    {
+      "UserID": "user10",
+      "Name": "Olivia Lopez",
+      "Email": "olivia.lopez@example.com",
+      "Password": "hashed_password_10"
+    }
+  ]
+}

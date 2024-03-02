@@ -1,0 +1,54 @@
+{
+  "Group" : [
+    {
+      "GroupID": "group1",
+      "Name": "Artificial Intelligence Enthusiasts",
+      "Description": "A community dedicated to exploring the latest advancements and applications in artificial intelligence."
+    },
+    {
+      "GroupID": "group2",
+      "Name": "Machine Learning Mastery",
+      "Description": "Join us to master machine learning algorithms, techniques, and best practices."
+    },
+    {
+      "GroupID": "group3",
+      "Name": "Productivity Hackers",
+      "Description": "Discover proven strategies and tools to boost productivity and achieve your goals."
+    },
+    {
+      "GroupID": "group4",
+      "Name": "Tech Innovators",
+      "Description": "Connect with fellow tech enthusiasts and stay updated on the latest innovations in the industry."
+    },
+    {
+      "GroupID": "group5",
+      "Name": "Professional Development Network",
+      "Description": "A platform for professionals to enhance their skills, network with peers, and advance their careers."
+    },
+    {
+      "GroupID": "group6",
+      "Name": "Creative Writers Community",
+      "Description": "Share your stories, receive feedback, and connect with other creative writers in our supportive community."
+    },
+    {
+      "GroupID": "group7",
+      "Name": "Health & Wellness Hub",
+      "Description": "Join us to discuss health tips, fitness routines, mental well-being, and lead a healthier lifestyle."
+    },
+    {
+      "GroupID": "group8",
+      "Name": "Financial Freedom Forum",
+      "Description": "Learn about personal finance, investing, budgeting, and strategies for achieving financial independence."
+    },
+    {
+      "GroupID": "group9",
+      "Name": "Travel Enthusiasts Club",
+      "Description": "Share your travel experiences, tips, and recommendations with fellow travel enthusiasts."
+    },
+    {
+      "GroupID": "group10",
+      "Name": "Food Lovers Society",
+      "Description": "A community for food lovers to share recipes, culinary experiences, and indulge in gastronomic delights."
+    }
+  ]
+}
