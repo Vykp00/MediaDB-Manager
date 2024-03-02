@@ -1,12 +1,13 @@
 // Communicate with event
 const { ipcRenderer } = require('electron');
-// Queries for the application:
+
+// TODO: Queries:
 // JOIN: A view on Dashboard to show total number of user, and post in a group
 // SELECT all comments in a post (DONE) ✌️
-// INSERT new user to a group (INSERT to membership table)
+// INSERT new user to a group (INSERT to membership table) (DONE) ✌️
 // DELETE a comment in a post
 // UPDATE a user’s name
-// For Dashboard (SELECT * queries)
+// TODO: Dashboard (SELECT * queries)
 // Display Group Table (DONE) ✌️
 // Display User Table (DONE) ✌️
 // Display Post	 Table (DONE) ✌️
@@ -76,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (type === 4) {
       headers = commentHeaders;
       tableName.innerHTML = 'Comment Table';
+      btnOptionText = 'Delete';
     } // fetch data is from groupByUser table
     if (type === 5) {
       headers = canJoinGroupHeaders;
@@ -121,6 +123,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(`Fetching group for ${userID}`);
   }
 
+  // Trigger INSERT to Membership and wait for response message
+  // It triggers notification
+  async function newMember(groupId, userId) {
+    console.log(groupId);
+    console.log(userId);
+    const result = await joinGroup(groupId, userId);
+    if (result.success) {
+      showNotification('success', 'Joined group successfully');
+      // Reload the User Table
+      canJoinGroup (userId);
+    } else {
+      showNotification('error', 'Failed to join group');
+    }
+  }
+
   // Render SELECT ALL group results
   ipcRenderer.on('groups', (event, groups) => {
     renderData(groups, 1);
@@ -148,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderData(groupsByUser, 5);
   });
 
-  // Decide the optionBtn fucntion
+  // Decide the optionBtn function
   function setOptionBtn (optionText, data) {
   // This render table option button // EDIT IT TO MATCH EACH TABLE
     const optionBtn = document.createElement('button');
@@ -166,6 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     } else if (optionText === 'Join') {
       optionBtn.textContent = optionText;
+      optionBtn.onclick = function () {
+        newMember(data.groupid, data.userid);
+      }; // Call the getComments function passing the postId
+    } else if (optionText === 'Delete') {
+      optionBtn.textContent = optionText;
+      optionBtn.onclick = function () {
+        console.log(`Deleting comment for ${data.commentid}`);
+      }; // Call the getComments function passing the postId
     } else {
       optionBtn.textContent = 'Others';
       // Add an onclick event listener to the button
@@ -177,3 +202,19 @@ document.addEventListener('DOMContentLoaded', () => {
     return optionBtn;
   }
 });
+
+// This function INSERT new row to Membership and return a promise
+async function joinGroup(groupId, userId) {
+  return new Promise((resolve, reject) => {
+    ipcRenderer.send('joinGroup', groupId, userId);
+    ipcRenderer.once('joinGroupResult', (event, success) => {
+      resolve({ success });
+    });
+  });
+}
+
+function showNotification(type, message) {
+  const notification = new Notification('Notification', {
+    body: message
+  });
+}

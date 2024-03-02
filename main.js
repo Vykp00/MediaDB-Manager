@@ -28,6 +28,7 @@ const createWindow = () => {
       preload: path.join(app.getAppPath(), 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false,
+      enableRemoteModule: true,
     }
   });
 
@@ -124,6 +125,19 @@ ipcMain.on('getGroupsByUser', async (event, userId) => {
   } catch (err) {
     console.error('Error executing query', err);
     event.reply('groupByUser', []); // Sending an empty array in case of error
+  }
+});
+
+// INSERT a user to a new group in Membership table
+ipcMain.on('joinGroup', async (event, groupId, userId) => {
+  try {
+    const client = await pool.connect();
+    await client.query('INSERT INTO membership (userID, groupID) VALUES ($1, $2)', [userId, groupId]);
+    event.reply('joinGroupResult', true); // Sending success response
+    client.release();
+  } catch (err) {
+    console.error('Error executing query', err);
+    event.reply('joinGroupResult', false); // Sending error response
   }
 });
 
