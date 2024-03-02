@@ -107,6 +107,26 @@ ipcMain.on('getComments', async (event, postId) => {
   }
 });
 
+// Get all Groups that a User is not a Member in
+ipcMain.on('getGroupsByUser', async (event, userId) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`
+        SELECT $1 AS userID, g.groupID, g.name
+        FROM "group" g
+        LEFT JOIN membership m ON g.groupID = m.groupID AND m.userID = $1
+        WHERE m.userID IS NULL;;
+        `, [userId]);
+    const groups = result.rows;
+    event.reply('groupByUser', groups); // Sending the data back to the renderer process
+    client.release();
+    console.log(groups);
+  } catch (err) {
+    console.error('Error executing query', err);
+    event.reply('groupByUser', []); // Sending an empty array in case of error
+  }
+});
+
 // Database change watching
 pool.connect((err, client, done) => {
   if (err) {

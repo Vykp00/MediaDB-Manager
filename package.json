@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "Media DBMS",
   "productName": "MediaDB Manager",
   "version": "1.0.0",
   "description": "Media-DBMS front end",
@@ -25,11 +25,11 @@
   },
   "homepage": "https://github.com/Vykp00/Media-DBMS#readme",
   "devDependencies": {
-    "electron": "^29.0.1"
+    "electron": "^29.0.1",
+    "eslint": "^8.57.0"
   },
   "dependencies": {
     "@electron-internal/eslint-config": "^1.0.1",
-    "eslint": "^8.57.0",
     "eslint-plugin-node": "^11.1.0",
     "pg": "^8.11.3",
     "socket.io-client": "^4.7.4"
