@@ -201,8 +201,10 @@ ipcMain.on('getGroupsByUser', async (event, userId) => {
 // INSERT a user to a new group in Membership table
 ipcMain.on('joinGroup', async (event, groupId, userId) => {
   try {
+    // Get the current daate format (YYYY-MM-DD)
+    const currentDate = new Date().toISOString().split('T')[0];
     const client = await pool.connect();
-    await client.query('INSERT INTO membership (userID, groupID) VALUES ($1, $2);', [userId, groupId]);
+    await client.query('INSERT INTO membership (userID, groupID, joinDate) VALUES ($1, $2, $3);', [userId, groupId, currentDate]);
     event.reply('joinGroupResult', true); // Sending success response
     client.release();
   } catch (err) {
