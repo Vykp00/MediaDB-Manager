@@ -1,11 +1,12 @@
 // Communicate with event
 const { ipcRenderer } = require('electron');
+const { dialog } = require('electron');
 
 // TODO: Queries:
 // JOIN: A view on Dashboard to show total number of user, and post in a group
 // SELECT all comments in a post (DONE) ✌️
 // INSERT new user to a group (INSERT to membership table) (DONE) ✌️
-// DELETE a comment in a post
+// DELETE a comment in a post (DONE) ✌️
 // UPDATE a user’s name
 // TODO: Dashboard (SELECT * queries)
 // Display Group Table (DONE) ✌️
@@ -138,6 +139,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // This function INSERT new row to Membership and return a promise
+  async function joinGroup(groupId, userId) {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.send('joinGroup', groupId, userId);
+      ipcRenderer.once('joinGroupResult', (event, success) => {
+        resolve({ success });
+      });
+    });
+  }
+
+  // Ask for confirmation before dangerous execution (e.g DELETE, UPDATE)
+  async function showConfirmationDialog(options) {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.send('openDialog', options);
+      ipcRenderer.once('dialogResponse', (event, success) => {
+        // User click "Yes" or "Confirm", it should return true
+        // If User click "Cancel" or ESC, it bails and return nothing
+        resolve(success);
+      });
+    });
+  }
+
+  // This will DELETE a comment. Return a Promise with variable true if the execution is successful
+  async function deleteComment(commentId) {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.send('deleteComment', commentId);
+      ipcRenderer.once('deleteCommentResult', (event, success) => {
+        resolve(success);
+      });
+    });
+  }
+
+  // To delete the comment, it first asks for user confirmation from user
+  // If response from openDialog is 0 === user click 'Confirm'. It started deleting the comment
+  async function deleteCommentProcess(commentID, postID) {
+    // Ask for confirmation
+    const confirmedDelete = await showConfirmationDialog(deleteOption);
+    // If true exist initiate delete Comments
+    if (confirmedDelete) {
+      const success = await deleteComment(commentID);
+      if (success) {
+        // Return confirm message
+        showNotification('success', 'Comment deleted successfully');
+        // Refresh table after deletion
+        getComments(postID);
+      } else {
+        showNotification('error', 'Failed to delete comment');
+      }
+    }
+  }
+
+
   // Render SELECT ALL group results
   ipcRenderer.on('groups', (event, groups) => {
     renderData(groups, 1);
@@ -183,13 +236,16 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     } else if (optionText === 'Join') {
       optionBtn.textContent = optionText;
-      optionBtn.onclick = function () {
-        newMember(data.groupid, data.userid);
+      optionBtn.onclick = async function () {
+        await newMember(data.groupid, data.userid);
       }; // Call the getComments function passing the postId
     } else if (optionText === 'Delete') {
       optionBtn.textContent = optionText;
-      optionBtn.onclick = function () {
-        console.log(`Deleting comment for ${data.commentid}`);
+      optionBtn.onclick = async function () {
+        // TODO: Delete later
+        console.log(data.commentid);
+        console.log(data.postid);
+        await deleteCommentProcess(data.commentid, data.postid);
       }; // Call the getComments function passing the postId
     } else {
       optionBtn.textContent = 'Others';
@@ -203,16 +259,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// This function INSERT new row to Membership and return a promise
-async function joinGroup(groupId, userId) {
-  return new Promise((resolve, reject) => {
-    ipcRenderer.send('joinGroup', groupId, userId);
-    ipcRenderer.once('joinGroupResult', (event, success) => {
-      resolve({ success });
-    });
-  });
+// Delete option for comment
+let deleteOption = {
+  type: 'question',
+  buttons: ['Confirm', 'Cancel'],
+  defaultId: 1, // Index of the Cancel button in the buttons array which will be selected by default when the message box opens.
+  title: 'Confirm Deletion',
+  message: 'Are you sure you want to delete this comment? 🗑️'
 }
 
+// General Notification
 function showNotification(type, message) {
   const notification = new Notification('Notification', {
     body: message

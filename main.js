@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('node:path');
 // Connect to Postgres
 const { Pool } = require('pg');
@@ -19,6 +19,12 @@ const isMac = process.platform === 'darwin';
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+// NOTE: This is only a security risk when the app open a third-party website or windows
+// TODO: Refactor the code for secured settings
+//       preload: path.join(app.getAppPath(), 'preload.js'),
+//       nodeIntegration: false, // is default value after Electron v5
+//       contextIsolation: true, // protect against prototype pollution
+//       enableRemoteModule: false, // turn off remote
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     // Expand window size in DevMode
@@ -28,7 +34,7 @@ const createWindow = () => {
       preload: path.join(app.getAppPath(), 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true,
+      //enableRemoteModule: true,
     }
   });
 
@@ -41,7 +47,7 @@ const createWindow = () => {
 
 // Open the app window when it's ready
 app.whenReady().then(() => {
-  ipcMain.handle('ping', () => 'pong');
+  //ipcMain.handle('ping', () => 'pong');
   createWindow();
 
   // Open a window if none are open (macOS)
@@ -52,7 +58,8 @@ app.whenReady().then(() => {
   });
 });
 
-// Get all posts from post table
+// TODO: Considering Refactoring these query code
+// SELECT ALL Posts from post table
 ipcMain.on('getPosts', async (event) => {
   try {
     const client = await pool.connect();
@@ -98,7 +105,7 @@ ipcMain.on('getUsers', async (event) => {
 ipcMain.on('getComments', async (event, postId) => {
   try {
     const client = await pool.connect();
-    const result = await client.query('SELECT * FROM comment WHERE postid = $1', [postId]);
+    const result = await client.query('SELECT * FROM comment WHERE postid = $1 ORDER BY commentid', [postId]);
     const comments = result.rows;
     event.reply('comments', comments);
     client.release();
@@ -108,7 +115,7 @@ ipcMain.on('getComments', async (event, postId) => {
   }
 });
 
-// Get all Groups that a User is not a Member in
+// SELECT all Groups that a User is not a Member in
 ipcMain.on('getGroupsByUser', async (event, userId) => {
   try {
     const client = await pool.connect();
@@ -121,7 +128,6 @@ ipcMain.on('getGroupsByUser', async (event, userId) => {
     const groups = result.rows;
     event.reply('groupByUser', groups); // Sending the data back to the renderer process
     client.release();
-    console.log(groups);
   } catch (err) {
     console.error('Error executing query', err);
     event.reply('groupByUser', []); // Sending an empty array in case of error
@@ -141,6 +147,40 @@ ipcMain.on('joinGroup', async (event, groupId, userId) => {
   }
 });
 
+// DELETE a comment from a group
+ipcMain.on('deleteComment', async (event, commentID) => {
+  try {
+    const client = await pool.connect();
+    await client.query('DELETE FROM comment WHERE commentID = $1', [commentID]);
+    event.reply('deleteCommentResult', true); // Sending success response
+    // TODO: Delete for packaging
+    console.log('comment deleted');
+    client.release();
+  } catch (err) {
+    console.error('Error executing query', err);
+    event.reply('deleteCommentResult', false); // Sending error response
+  }
+});
+
+// Ask Confirmation before Deleting or Altering the database
+ipcMain.on('openDialog', async (event, options) => {
+  dialog.showMessageBox(mainWindow, options)
+    // Dialog returns a promise so let's handle it correctly
+    .then((result) => {
+      // Bail if the user pressed "Cancel" or escaped (ESC) from the dialog box
+      if (result.response !== 0) {
+        // TODO: Delete before packaging
+        console.log('The "Cancel" button was pressed');
+        return; }
+
+      // Testing. TODO: Delete before Packaging
+      if (result.response === 0) {
+        console.log('The "Yes" or "Confirm" button was pressed (main process)');
+      }
+      // Reply to the render process
+      event.reply('dialogResponse', true); // Sending confirm message
+    });
+})
 // Database change watching
 pool.connect((err, client, done) => {
   if (err) {
@@ -153,6 +193,7 @@ pool.connect((err, client, done) => {
   client.query('LISTEN changes');
 });
 
+// TODO: Add confirm message box before closing
 // Quit the app when all windows are closed (Windows & Linux)
 app.on('window-all-closed', () => {
   if (!isMac) {
