@@ -15,15 +15,23 @@
     <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body>
-<h1>Media Dashboard 👋</h1>
-<div class="navBtn" id="navBtn">
-    <button class="btn success" id="group-btn">Group</button>
-    <button class="btn success" id="user-btn">User</button>
-    <button class="btn success" id="post-btn">Post</button>
+<div class="topnav">
+    <a class="active"><img src="./images/logo.svg" width="20" /></a>
+    <a >Media DBMS</a>
+</div>
+<!-- Tab links -->
+<div class="tab">
+    <button class="btn default" id="dashboard-btn" >Dashboard</button>
+    <button class="btn default" id="group-btn">Group</button>
+    <button class="btn default" id="user-btn">User</button>
+    <button class="btn default" id="post-btn">Post</button>
 </div>
 <br/>
 <div id="table-container">
-    <h2 id="table-name"></h2>
+    <h2 class="tabcontent" id="table-name"></h2>
+    <div class="container" id="form-container">
+        <!-- Populate Form here-->
+    </div>
     <table id="data-table">
         <thead>
         <tr id="data-header">
@@ -31,7 +39,7 @@
         </tr>
         </thead>
         <tbody id="data-output">
-        <!-- Populate data by renderer.js -->
+        <!-- Populate table data here-->
         </tbody>
     </table>
 </div>

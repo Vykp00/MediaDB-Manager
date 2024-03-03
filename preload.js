@@ -8,11 +8,12 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 // FIXME: Check why it's not connecting between ipcRenderer and ipcMain
 /*
+// ...args means collecting multiple variables
 contextBridge.exposeInMainWorld(
   "api",
   {
-    sendDB: function(channel, ...arg) {
-      ipcRenderer.send(channel, ...arg);
+    sendDB: function(channel, ...args) {
+      ipcRenderer.send(channel, ...args);
     },
     receiveDB: function(func){
       ipcRenderer.on("D", (event, ...args) => func(event, ...args));
