@@ -164,10 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
   async function showConfirmationDialog (options) {
     return new Promise((resolve, reject) => {
       ipcRenderer.send('openDialog', options);
-      ipcRenderer.once('dialogResponse', (event, success) => {
-        // User click "Yes" or "Confirm", it should return true
-        // If User click "Cancel" or ESC, it bails and return nothing
-        resolve({ success });
+      ipcRenderer.once('dialogResponse', (event, confirmed) => {
+        // Resolve with true if confirmed, otherwise resolve with false
+        resolve(confirmed);
       });
     });
   }
@@ -177,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return new Promise((resolve, reject) => {
       ipcRenderer.send('deleteComment', commentId);
       ipcRenderer.once('deleteCommentResult', (event, success) => {
+        // Resolve with true if the comment was successfully deleted, otherwise resolve with false
         resolve({ success });
       });
     });
@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return new Promise((resolve, reject) => {
       ipcRenderer.send('updateGroup', groupForm);
       ipcRenderer.once('groupUpdated', (event, success) => {
+        // Resolve with true if the group was successfully update, otherwise resolve with false
         resolve({ success });
       });
     });
@@ -198,18 +199,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ask for confirmation
     const confirmedUpdate = await showConfirmationDialog(updateOption);
     // If true exist initiate the update execution
-    if (confirmedUpdate) {
-      const success = await updateGroup(groupForm);
-      if (success) {
-        showNotification('success', 'Group updated successfully!');
-        // Refresh table after updating
-        ipcRenderer.send('getGroups');
-        // Clear old form
-        const oldForm = document.getElementById('form-container');
-        oldForm.innerHTML = '';
-      } else {
-        showNotification('error', 'Failed to update group');
+    if (confirmedUpdate === true) {
+      try {
+        const success = await updateGroup(groupForm);
+        if (success) {
+          showNotification('success', 'Group updated successfully!');
+          // Refresh table after updating
+          ipcRenderer.send('getGroups');
+          // Clear old form
+          const oldForm = document.getElementById('form-container');
+          oldForm.innerHTML = '';
+        } else {
+          showNotification('error', 'Failed to update group');
+        }
+      } catch (error) {
+        console.error('Error updating group:', error);
+        showNotification('error', 'An error occurred while updating group');
       }
+    } else {
+      console.log('Cancel was hit');
+      // If cancelled, do nothing
     }
   }
 
@@ -219,16 +228,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ask for confirmation
     const confirmedDelete = await showConfirmationDialog(deleteOption);
     // If true exist initiate delete Comments
-    if (confirmedDelete) {
-      const success = await deleteComment(commentID);
-      if (success) {
-        // Return confirm message
-        showNotification('success', 'Comment deleted successfully!');
-        // Refresh table after deletion
-        getComments(postID);
-      } else {
-        showNotification('error', 'Failed to delete comment');
+    if (confirmedDelete === true) {
+      try {
+        const success = await deleteComment(commentID);
+        if (success) {
+          // Return success message
+          showNotification('success', 'Comment deleted successfully!');
+          // Refresh table after deletion
+          getComments(postID);
+        } else {
+          showNotification('error', 'Failed to delete comment');
+        }
+      } catch (error) {
+        console.error('Error deleting comment:', error);
+        showNotification('error', 'An error occurred while deleting comment');
       }
+    } else {
+      console.log('Cancel was hit');
+      // If cancelled, do nothing
     }
   }
 
@@ -424,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const deleteOption = {
   type: 'question',
   buttons: ['Confirm', 'Cancel'],
-  defaultId: 1, // Index of the Cancel button in the buttons array which will be selected by default when the message box opens.
+  cancelId: 1, // Index of the Cancel button in the buttons array for ESC command
   title: 'Confirm Deletion',
   message: 'Are you sure you want to delete this comment? 🗑️'
 };
@@ -433,7 +450,7 @@ const deleteOption = {
 const updateOption = {
   type: 'question',
   buttons: ['Yes', 'Cancel'],
-  defaultId: 1, // Index of the Cancel button in the buttons array which will be selected by default when the message box opens.
+  cancelId: 1, // Index of the Cancel button in the buttons array for ESC command
   title: 'Confirm Group Change',
   message: 'Are you sure you want to change this group information?'
 };

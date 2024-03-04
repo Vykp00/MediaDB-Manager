@@ -9,7 +9,7 @@ const { JSDOM } = require('jsdom');
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'media',
+  database: 'blog',
   password: 'postgres',
   port: 5432
 });
@@ -235,14 +235,16 @@ ipcMain.on('deleteComment', async (event, commentID) => {
 // Ask Confirmation before Deleting or Altering the database
 ipcMain.on('openDialog', async (event, messageOptions) => {
   dialog.showMessageBox(mainWindow, messageOptions)
-    // Dialog returns a promise so let's handle it correctly
     .then((result) => {
-      // Bail if the user pressed "Cancel" or escaped (ESC) from the dialog box
-      if (result.response !== 0) {
-        return;
+      // Reply to the render process based on user response
+      if (result.response === 0) {
+        // Sending confirmation message only if user clicks "Yes"
+        event.reply('dialogResponse', true); // Sending confirm message
+      } else {
+        // Sending cancel message if user clicks "Cancel" or closes the dialog
+        //console.log("Cancel was hit");
+        event.reply('dialogResponse', false); // Sending cancel message
       }
-      // Reply to the render process
-      event.reply('dialogResponse', true); // Sending confirm message
     });
 });
 
