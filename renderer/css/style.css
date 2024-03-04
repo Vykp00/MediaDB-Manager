@@ -1,37 +1,37 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     font-family: sans-serif;
     min-height: 100vh;
     color: #555;
 }
 
-table{
-    width:  100%;
+table {
+    width: 100%;
     margin: 30px auto;
 }
 
-table th{
+table th {
     padding: 10px 0;
     background-color: #a099ff;
     /* background-color: #fff; */
-    border:  thin solid #d4d4d4;
+    border: thin solid #d4d4d4;
 }
 
-table td{
+table td {
     padding: 10px;
-    border:  thin solid #d4d4d4;
+    border: thin solid #d4d4d4;
     width: 18%;
     text-align: center;
     background-color: #fff;
 }
 
-table img{
-    width:  70%;
+table img {
+    width: 70%;
 }
 
 /* Add a black background color to the top navigation */
@@ -68,19 +68,29 @@ table img{
     font-size: 16px; /* Add Font*/
 }
 
-.success {background-color: #a099ff;} /*Purple*/
-.success:hover {background-color: #c6c2ff;}
+.success {
+    background-color: #a099ff;
+}
+
+/*Purple*/
+.success:hover {
+    background-color: #c6c2ff;
+}
 
 .default {
     background-color: #e7e7e7;
 
     color: black;
     position: relative;
-    left: initial;} /* Gray */
+    left: initial;
+}
+
+/* Gray */
 .default:hover {
     background: #ddd;
     position: relative;
-    left: initial;}
+    left: initial;
+}
 
 /* This is our style for the invalid fields */
 input.invalid {

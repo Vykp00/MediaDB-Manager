@@ -2,7 +2,7 @@
   "name": "media-dbms",
   "productName": "MediaDB Manager",
   "version": "1.0.0",
-  "description": "Media-DBMS front end",
+  "description": "Media-DBMS",
   "main": "main.js",
   "scripts": {
     "dev": "npx electronmon .",

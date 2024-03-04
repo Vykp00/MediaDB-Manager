@@ -23,19 +23,14 @@ const isMac = process.platform === 'darwin';
 let mainWindow;
 
 // NOTE: This is only a security risk when the app open a third-party website or windows
-// TODO: Refactor the code for secured settings
-//       preload: path.join(app.getAppPath(), 'preload.js'),
-//       nodeIntegration: false, // is default value after Electron v5
-//       contextIsolation: true, // protect against prototype pollution
-//       enableRemoteModule: false, // turn off remote
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     // Expand window size in DevMode
     width: isDev ? 1000 : 800,
     height: 650,
-    icon: `${__dirname}/assets/icons/Icon_256x256.png`,
+    icon: path.join(__dirname, '/assets/icons/Icon_256x256.png'),
     webPreferences: {
-      preload: path.join(app.getAppPath(), 'preload.js'),
+      //preload: path.join(app.getAppPath(), 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false
       // enableRemoteModule: true,
@@ -108,7 +103,7 @@ ipcMain.on('getPosts', async (event) => {
     const posts = result.rows;
     await client.query('COMMIT'); // Commit transaction
     event.reply('posts', posts);
-  } catch (err) {
+  } catch (error) {
     await client.query('ROLLBACK'); // Rollback transaction on error
     console.error('Error executing query:', error); // Send error message
     event.reply('posts', []);
@@ -237,14 +232,7 @@ ipcMain.on('openDialog', async (event, messageOptions) => {
     .then((result) => {
       // Bail if the user pressed "Cancel" or escaped (ESC) from the dialog box
       if (result.response !== 0) {
-        // TODO: Delete before packaging
-        console.log('The "Cancel" button was pressed');
         return;
-      }
-
-      // Testing. TODO: Delete before Packaging
-      if (result.response === 0) {
-        console.log('The "Yes" or "Confirm" button was pressed (main process)');
       }
       // Reply to the render process
       event.reply('dialogResponse', true); // Sending confirm message

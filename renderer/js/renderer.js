@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const postBtn = document.getElementById('post-btn');
 
   // Back to DashBoard
-  dashBoardBtn.addEventListener('click',() => {
+  dashBoardBtn.addEventListener('click', () => {
     ipcRenderer.send('getGroupReport');
   });
 
@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // This render Data from icpRenderer
   function renderData (data, type) {
-    console.log(data);
 
     const dashBoardHeaders = ['GroupID', 'Group Name', 'Total Members', 'Total Posts', 'Latest Post Date', 'Total Comments'];
     const groupHeaders = ['GroupID', 'Name', 'Description', 'Option'];
@@ -131,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function canJoinGroup (userID) {
     ipcRenderer.send('getGroupsByUser', userID);
-    // console.log(`Fetching group for ${userID}`);
   }
 
   function getGroupName (groupID) {
@@ -141,8 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Trigger INSERT to Membership and wait for response message
   // It triggers notification
   async function newMember (groupId, userId) {
-    console.log(groupId);
-    console.log(userId);
     const result = await joinGroup(groupId, userId);
     if (result.success) {
       showNotification('success', 'Joined group successfully');
@@ -257,17 +253,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Here we fetch group that for add member so only group that this user is not in will be display
   ipcRenderer.on('groupByUser', (event, groupsByUser) => {
-    console.log('Received groupsByUser data:', groupsByUser);
     renderData(groupsByUser, 5);
   });
 
   let groupList; // Contain existing group name
 
-  // Fetch group name list except for 1 groupid
+  // Fetch group name list except for 1 groupId
   ipcRenderer.on('groupNames', (event, groupNames) => {
     groupList = groupNames;
-    // TODO: DELETE later
-    console.log(groupList);
   });
 
   // Decide the optionBtn function
@@ -296,23 +289,19 @@ document.addEventListener('DOMContentLoaded', () => {
       optionBtn.className = 'btn cancel-btn';
       optionBtn.textContent = optionText;
       optionBtn.onclick = async function () {
-        // TODO: Delete later
-        console.log(data.commentid);
-        console.log(data.postid);
         await deleteCommentProcess(data.commentid, data.postid);
-      }; // Call the getComments function passing the postId
+      }; // Call the editProile function passing the groupID
     } else if (optionText === 'Edit Profile') {
       optionBtn.textContent = optionText;
       optionBtn.onclick = async function () {
         await getGroupName(data.groupid);
         await renderEditForm(data);
-        console.log(`Editing ${data.name} Group Profile`);
       };
     } else {
       optionBtn.textContent = 'Others';
       // Add an onclick event listener to the button
       optionBtn.onclick = function () {
-        console.log('Other functions'); // Call the other function passing the postId
+        console.log('Other functions');
       };
     }
 
@@ -329,7 +318,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // convert to lowercase for case-sensitive search
     const lowercaseNewGroupName = updateGroup.name.trim().toLowerCase();
 
-    console.log(lowercaseNewGroupName);
     // Iterate over the array of existing group names
     const result = !groupList.some(group => group.name.trim().toLowerCase() === lowercaseNewGroupName);
 
@@ -372,7 +360,6 @@ document.addEventListener('DOMContentLoaded', () => {
         description: formData.get('description')
       }; // Validate input
       const checkInput = await validateInput(updatedGroup);
-      console.log('Result from Form', checkInput);
       if (checkInput === true) {
         await updateGroupProcess(updatedGroup);
       }
