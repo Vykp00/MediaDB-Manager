@@ -9,8 +9,8 @@ const { JSDOM } = require('jsdom');
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'blog',
-  password: 'password',
+  database: 'media',
+  password: 'postgres',
   port: 5432
 });
 // Check if it's development mode
