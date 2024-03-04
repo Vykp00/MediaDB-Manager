@@ -1,5 +1,5 @@
 {
-  "name": "Media DBMS",
+  "name": "media-dbms",
   "productName": "MediaDB Manager",
   "version": "1.0.0",
   "description": "Media-DBMS front end",
@@ -33,7 +33,6 @@
     "dompurify": "^3.0.9",
     "eslint-plugin-node": "^11.1.0",
     "jsdom": "^24.0.0",
-    "pg": "^8.11.3",
-    "socket.io-client": "^4.7.4"
+    "pg": "^8.11.3"
   }
 }
