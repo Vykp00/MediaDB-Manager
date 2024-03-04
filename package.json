@@ -2,7 +2,7 @@
   "name": "media-dbms",
   "productName": "MediaDB Manager",
   "version": "1.0.0",
-  "description": "Media-DBMS",
+  "description": "MediaDB Manager",
   "main": "main.js",
   "scripts": {
     "dev": "npx electronmon .",
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Vykp00/Media-DBMS#readme",
   "devDependencies": {
+    "@electron-forge/cli": "^7.3.0",
     "electron": "^29.0.1",
     "eslint": "^8.57.0"
   },

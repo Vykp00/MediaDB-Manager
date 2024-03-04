@@ -56,19 +56,20 @@ app.whenReady().then(() => {
   });
 });
 
+// Set our app name on Notification. Otherwise, it's "electron.app.Electron" by default
+app.setAppUserModelId("MediaDB Manager");
 // JOIN and aggregate functions to show most popular groups by posts
 ipcMain.on('getGroupReport', async (event) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN'); // Start transaction
-    const result = await client.query(
-      'SELECT \n' +
+    const result = await client.query('SELECT \n' +
       '    g.groupID,\n' +
       '    g.name AS groupName,\n' +
       '    COUNT(DISTINCT m.userID) AS totalMembers,\n' +
       '    COUNT(DISTINCT p.postID) AS totalPosts,\n' +
       '    MAX(p.date) AS newestPostDate,\n' +
-      '    COUNT(c.commentID) AS totalComments\n' +
+      '    COUNT(DISTINCT c.commentID) AS totalComments\n' +
       'FROM \n' +
       '    "group" g\n' +
       'LEFT JOIN \n' +
@@ -76,11 +77,17 @@ ipcMain.on('getGroupReport', async (event) => {
       'LEFT JOIN \n' +
       '    post p ON g.groupID = p.groupID\n' +
       'LEFT JOIN \n' +
-      '    comment c ON p.postID = c.postID\n' +
+      '    (\n' +
+      '        SELECT postID, COUNT(commentID) AS commentCount\n' +
+      '        FROM comment\n' +
+      '        GROUP BY postID\n' +
+      '    ) cCount ON p.postID = cCount.postID\n' +
+      'LEFT JOIN \n' +
+      '    comment c ON cCount.postID = c.postID\n' +
       'GROUP BY \n' +
       '    g.groupID, g.name\n' +
       'ORDER BY \n' +
-      '    totalPosts DESC;\n'
+      '    totalPosts DESC;'
     ); // Execute query
     const dashBoard = result.rows;
     await client.query('COMMIT'); // Commit transaction

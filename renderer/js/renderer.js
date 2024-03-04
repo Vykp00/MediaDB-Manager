@@ -1,5 +1,6 @@
 // Communicate with event
 const { ipcRenderer } = require('electron');
+const path = require("node:path");
 
 // GET post
 document.addEventListener('DOMContentLoaded', () => {
@@ -141,11 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
   async function newMember (groupId, userId) {
     const result = await joinGroup(groupId, userId);
     if (result.success) {
-      showNotification('success', 'Joined group successfully');
+      showNotification('success', 'New membership added successfully!');
       // Reload the User Table
       canJoinGroup(userId);
     } else {
-      showNotification('error', 'Failed to join group');
+      showNotification('error', 'Failed to join a new group');
     }
   }
 
@@ -200,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (confirmedUpdate) {
       const success = await updateGroup(groupForm);
       if (success) {
-        showNotification('success', 'Group updated successfully');
+        showNotification('success', 'Group updated successfully!');
         // Refresh table after updating
         ipcRenderer.send('getGroups');
         // Clear old form
@@ -222,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const success = await deleteComment(commentID);
       if (success) {
         // Return confirm message
-        showNotification('success', 'Comment deleted successfully');
+        showNotification('success', 'Comment deleted successfully!');
         // Refresh table after deletion
         getComments(postID);
       } else {
@@ -290,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
       optionBtn.textContent = optionText;
       optionBtn.onclick = async function () {
         await deleteCommentProcess(data.commentid, data.postid);
-      }; // Call the editProile function passing the groupID
+      }; // Call the editProfile function passing the groupID
     } else if (optionText === 'Edit Profile') {
       optionBtn.textContent = optionText;
       optionBtn.onclick = async function () {
@@ -440,6 +441,7 @@ const updateOption = {
 // General Notification
 function showNotification (type, message) {
   const notification = new Notification('Notification', {
-    body: message
+    body: message,
+    icon: path.join(__dirname, '../assets/icons/Icon_256x256.png')
   });
 }
