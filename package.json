@@ -2,7 +2,7 @@
   "name": "media-dbms",
   "productName": "MediaDB Manager",
   "version": "1.0.0",
-  "description": "MediaDB Manager",
+  "description": "MediaDB Manager is a lightweight cross-platform application for managing Media database in PostgreSQL client. Built with Electron, Javascript, and a lot of coffee.",
   "main": "main.js",
   "scripts": {
     "dev": "npx electronmon .",
