@@ -51,6 +51,7 @@ npm install
     * **database:** blog,
     * **password:** Qwerty1234,
     * **port:** 5432
+    * <br />
    Query to create your own table:
 ```SQL
 -- Create user table 
