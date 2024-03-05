@@ -10,11 +10,11 @@ const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
   database: 'blog',
-  password: 'postgres',
+  password: 'Qwerty1234',
   port: 5432
 });
 // Check if it's development mode
-const isDev = process.env.NODE_ENV !== 'production';
+//const isDev = process.env.NODE_ENV === 'development';
 // Check if it's on Mac
 const isMac = process.platform === 'darwin';
 
@@ -26,7 +26,7 @@ let mainWindow;
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     // Expand window size in DevMode
-    width: isDev ? 1000 : 800,
+    width: 1000 ,
     height: 650,
     icon: path.join(__dirname, '/assets/icons/Icon_256x256.png'),
     webPreferences: {
@@ -38,9 +38,9 @@ const createWindow = () => {
   });
 
   // Open DevTool when it's development mode
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
+  //if (!isDev) {
+  // mainWindow.webContents.openDevTools();
+  // }
   mainWindow.loadFile(path.join(__dirname, './renderer/index.html'));
 };
 
