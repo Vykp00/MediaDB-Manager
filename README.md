@@ -24,7 +24,7 @@ The queries executions and features should be user-friendly and limits users' er
 ![screen](https://github.com/Vykp00/MediaDB-Manager/blob/main/assets/icons/screen.png)
 
 ## Support Platforms
-The application have been tested on Windows 10 (H22H2), Ubuntu 22.04.4 LTS (Jammy Jellyfish), and MacOS (Sonoma 14.3 iirc).
+The application have been tested on Windows 10 (H22H2), Ubuntu 22.04.4 LTS (Jammy Jellyfish), and MacOS (Sonoma 14.3.1).
 
 ## Installation
 ### Required packages
