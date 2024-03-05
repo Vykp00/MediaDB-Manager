@@ -20,7 +20,6 @@ The queries executions and features should be user-friendly and limits users' er
 - [Installation](#installation)
 - [Packaging](#packaging)
 - [License](#license)
-- [Support Links](#support-links)
 
 ![screen](https://github.com/Vykp00/MediaDB-Manager/blob/main/assets/icons/screen.png)
 
